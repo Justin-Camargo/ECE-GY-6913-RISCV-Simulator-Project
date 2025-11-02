@@ -48,61 +48,46 @@ class InsMem(object):
         return instruction_padded
         pass
     
-    def getOpCode(self, instruction_hex):
-        # Getting last two bytes of instruction
-        temp1 = instruction_hex[-2:]
-        # Converting to int and using bitwise and to get only the last 7 bits
-        temp2 = int(temp1,16) & 0x7F
-        # Converting opcode to binary
-        opcode = bin(temp2)
-        opcode_padded = '0b'
-        # Padding with zeros:
-        for i in range(7-len(opcode[2:])):
-            opcode_padded += '0'
-        opcode_padded += opcode[2:]
-        return opcode_padded
+    def getOpCode(self, instruction_bin):
+        return '0b' + instruction_bin[-7:]
     
-    def getRd(self, instruction_hex):
-        # Getting the two relevant bits of instruction
-        temp1 = instruction_hex[-3:-1]
-        # Converting to int and using bitwise and to get only the last 7 bits
-        temp2 = int(temp1,16) & 0x7C0
-        # Converting opcode to binary
-        rd = bin(temp2)
-        rd_padded = '0b'
-        # Padding with zeros:
-        for i in range(5-len(rd[2:])):
-            rd_padded += '0'
-        rd_padded += rd[2:]
-        return rd_padded
+    # def getRd(self, instruction_hex):
+    #     # Getting the two relevant bits of instruction
+    #     temp1 = instruction_hex[-3:-1]
+    #     # Converting to int and using bitwise and to get only the last 7 bits
+    #     temp2 = int(temp1,16) & 0x7C0
+    #     # Converting opcode to binary
+    #     rd = bin(temp2)
+    #     rd_padded = '0b'
+    #     # Padding with zeros:
+    #     for i in range(5-len(rd[2:])):
+    #         rd_padded += '0'
+    #     rd_padded += rd[2:]
+    #     return rd_padded
+    #     pass
     
-    def getFunc3(self, instruction_hex):
-        # Getting the two relevant bits of instruction
-        temp1 = instruction_hex[-4:-3]
-        # Converting to int and using bitwise and to get only the last 7 bits
-        temp2 = int(temp1,16) & 0x3800
-        # Converting opcode to binary
-        func3 = bin(temp2)
-        func3_padded = '0b'
-        # Padding with zeros:
-        for i in range(3-len(func3[2:])):
-            func3_padded += '0'
-        func3_padded += func3[2:]
-        return func3_padded
+    def getFunc3(self, instruction_bin):
+        func3 = '0b' + instruction_bin[-14:-11]
+        return func3
     
-    def getRs1(self, instruction_hex):
-        # Getting the two relevant bits of instruction
-        temp1 = instruction_hex[-5:-3]
-        # Converting to int and using bitwise and to get only the last 7 bits
-        temp2 = int(temp1,16) & 0x7C0
-        # Converting opcode to binary
-        rs1 = bin(temp2)
-        rs1_padded = '0b'
-        # Padding with zeros:
-        for i in range(5-len(rs1[2:])):
-            rs1_padded += '0'
-        rs1_padded += rs1[2:]
-        return rs1_padded
+    def getFunc7(self, instruction_bin):
+        return '0b' + instruction_bin[0:7]
+        pass
+    
+    # def getRs1(self, instruction_hex):
+    #     # Getting the two relevant bits of instruction
+    #     temp1 = instruction_hex[-5:-3]
+    #     # Converting to int and using bitwise and to get only the last 7 bits
+    #     temp2 = int(temp1,16) & 0x7C
+    #     # Converting opcode to binary
+    #     rs1 = bin(temp2)
+    #     rs1_padded = '0b'
+    #     # Padding with zeros:
+    #     for i in range(5-len(rs1[2:])):
+    #         rs1_padded += '0'
+    #     rs1_padded += rs1[2:]
+    #     return rs1_padded
+    #     pass
         
 class DataMem(object):
     def __init__(self, name, ioDir):
@@ -199,20 +184,26 @@ class SingleStageCore(Core):
         instr_count = 0
         for i in range(num_instr):
             reg_address = hex(instr_count*32)
-            instruction_hex = imem.padHexInstr(imem.readInstr(reg_address)) #hex
-            instruction_bin = bin(int(instruction_hex, base=16))
+            # instruction_hex = imem.padHexInstr(imem.readInstr(reg_address)) #hex
+            instruction_bin = imem.padBinInstr(bin(int(instruction_hex, base=16)))
    
-            opcode = imem.getOpCode(instruction_hex)
-            print(f'Instruction {i} in binary is \t \t{instruction_bin}')
-            print(f'Padded instruction {i} in binary is {imem.padBinInstr(instruction_bin)}')
-            # print(f'The length of instruction is: {len(instruction)}')
+            opcode = imem.getOpCode(instruction_bin)
+            print(f'Padded instruction {i} in binary is {instruction_bin}')
             print(f'The opcode of instruction {i} is {opcode}')
             instr_type = self.getInstrType(opcode)
             match instr_type:
                 case 'R':
                     print('R instruction')
+                    func3 = imem.getFunc3(instruction_bin)
+                    # func7 = imem.getFunc7(instruction_hex)
+                    # print(f'func7 is: {func7}')
+                    print(f'func3 is: {func3}')
+                    print(f'func 3 should be: {instruction_bin[-14:-11]}')
                 case 'I':
                     print('I instruction')
+                    func3 = imem.getFunc3(instruction_bin)
+                    print(f'func3 is: {func3}')
+                    print(f'func 3 should be: {instruction_bin[-14:-11]}')
                 case 'J':
                     print('J instruction')
                 case 'B':
