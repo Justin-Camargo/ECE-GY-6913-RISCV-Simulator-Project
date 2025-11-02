@@ -21,28 +21,89 @@ class InsMem(object):
     # FIXME: Need to start at ReadAddress <JRC, p:2>
     def readInstr(self, ReadAddress):
         #read instruction memory
-        
-        # row_nums = 32/self.IMem[0]
-        # if(row_nums % 2 != 0):
-            # row_nums += 1
-        
-        start_row = 0
-        start_col = 0
+        # Assumes all the instructions have a uniform format
+        start_row = int(int(ReadAddress, 16)/8)
         instruction = ""
-        counter = 0
-        for i in range(start_row, len(self.IMem), 1):
-            for j in range(start_col, len(self.IMem[i]), 1):
-                if counter < 32:
-                    instruction += self.IMem[i][j]
-                    counter += 1
-                else:
-                    i = len(self.IMem)
-                    break
-                
-        #return 32 bit hex val
-        return hex(int(instruction, 2))
+        for i in range(start_row, start_row + 4, 1):
+            instruction += self.IMem[i]
+        instruction = hex(int(instruction,2)) 
+        
+        return instruction
         pass
-          
+    
+    def padHexInstr(self, instruction):
+        instruction_padded = '0x'
+        for i in range(8-len(instruction[2:])):
+            instruction_padded += '0'
+        instruction_padded += instruction[2:]
+        #return padded hex value
+        return instruction_padded
+        pass
+    
+    def padBinInstr(self, instruction):
+        instruction_padded = '0b'
+        for i in range(32-len(instruction[2:])):
+            instruction_padded += '0'
+        instruction_padded += instruction[2:]
+        return instruction_padded
+        pass
+    
+    def getOpCode(self, instruction_hex):
+        # Getting last two bytes of instruction
+        temp1 = instruction_hex[-2:]
+        # Converting to int and using bitwise and to get only the last 7 bits
+        temp2 = int(temp1,16) & 0x7F
+        # Converting opcode to binary
+        opcode = bin(temp2)
+        opcode_padded = '0b'
+        # Padding with zeros:
+        for i in range(7-len(opcode[2:])):
+            opcode_padded += '0'
+        opcode_padded += opcode[2:]
+        return opcode_padded
+    
+    def getRd(self, instruction_hex):
+        # Getting the two relevant bits of instruction
+        temp1 = instruction_hex[-3:-1]
+        # Converting to int and using bitwise and to get only the last 7 bits
+        temp2 = int(temp1,16) & 0x7C0
+        # Converting opcode to binary
+        rd = bin(temp2)
+        rd_padded = '0b'
+        # Padding with zeros:
+        for i in range(5-len(rd[2:])):
+            rd_padded += '0'
+        rd_padded += rd[2:]
+        return rd_padded
+    
+    def getFunc3(self, instruction_hex):
+        # Getting the two relevant bits of instruction
+        temp1 = instruction_hex[-4:-3]
+        # Converting to int and using bitwise and to get only the last 7 bits
+        temp2 = int(temp1,16) & 0x3800
+        # Converting opcode to binary
+        func3 = bin(temp2)
+        func3_padded = '0b'
+        # Padding with zeros:
+        for i in range(3-len(func3[2:])):
+            func3_padded += '0'
+        func3_padded += func3[2:]
+        return func3_padded
+    
+    def getRs1(self, instruction_hex):
+        # Getting the two relevant bits of instruction
+        temp1 = instruction_hex[-5:-3]
+        # Converting to int and using bitwise and to get only the last 7 bits
+        temp2 = int(temp1,16) & 0x7C0
+        # Converting opcode to binary
+        rs1 = bin(temp2)
+        rs1_padded = '0b'
+        # Padding with zeros:
+        for i in range(5-len(rs1[2:])):
+            rs1_padded += '0'
+        rs1_padded += rs1[2:]
+        return rs1_padded
+        
 class DataMem(object):
     def __init__(self, name, ioDir):
         self.id = name
@@ -52,12 +113,19 @@ class DataMem(object):
 
     def readInstr(self, ReadAddress):
         #read data memory
-        # Can I use ReadAddress to show where I'm reading?
-        #return 32 bit hex val
+        start_row = int(int(ReadAddress, 16)/8)
+        instruction = ""
+        for i in range(start_row, start_row + 4, 1):
+            instruction += self.DMem[i]
+        instruction = hex(int(instruction,2)) 
+        
+        # Returns hex value
+        return instruction
         pass
         
     def writeDataMem(self, Address, WriteData):
         # write data into byte addressable memory
+        self.DMem[Address] = WriteData
         pass
                      
     def outputDataMem(self):
@@ -71,11 +139,21 @@ class RegisterFile(object):
         self.Registers = [0x0 for i in range(32)]
     
     def readRF(self, Reg_addr):
-        # Fill in
+        if not isinstance(Reg_addr, int):
+            raise ValueError("The register address is not an integer.")
+        # Assuming Reg_addr is hex
+        Reg_addr_dec = int(Reg_addr, 16)
+        
+        return self.Registers[Reg_addr_dec]
         pass
     
     def writeRF(self, Reg_addr, Wrt_reg_data):
-        # Fill in
+        if not isinstance(Reg_addr, int):
+            raise ValueError("The register address is not an integer.")
+        # Assuming Reg_addr is hex
+        Reg_addr_dec = int(Reg_addr, 16)
+        
+        self.Registers[Reg_addr_dec] = Wrt_reg_data
         pass
          
     def outputRF(self, cycle):
@@ -114,6 +192,40 @@ class SingleStageCore(Core):
 
     def step(self):
         # Your implementation
+        # Get the number of instructions we will execute
+        num_instr = int(len(imem.IMem)/4)
+        # print(f'number of instructions = {num_instr}')
+        # Loop through instructions and execute each instruction:
+        instr_count = 0
+        for i in range(num_instr):
+            reg_address = hex(instr_count*32)
+            instruction_hex = imem.padHexInstr(imem.readInstr(reg_address)) #hex
+            instruction_bin = bin(int(instruction_hex, base=16))
+   
+            opcode = imem.getOpCode(instruction_hex)
+            print(f'Instruction {i} in binary is \t \t{instruction_bin}')
+            print(f'Padded instruction {i} in binary is {imem.padBinInstr(instruction_bin)}')
+            # print(f'The length of instruction is: {len(instruction)}')
+            print(f'The opcode of instruction {i} is {opcode}')
+            instr_type = self.getInstrType(opcode)
+            match instr_type:
+                case 'R':
+                    print('R instruction')
+                case 'I':
+                    print('I instruction')
+                case 'J':
+                    print('J instruction')
+                case 'B':
+                    print('B instruction')
+                case 'S':
+                    print('S instruction')
+                case _:
+                    print('Halt instruction')
+                
+            instr_count += 1
+                
+            # Based on properties of instruction, add, subtract, etc.
+            
 
         self.halted = True
         if self.state.IF["nop"]:
@@ -124,6 +236,24 @@ class SingleStageCore(Core):
             
         self.state = self.nextState #The end of the cycle and updates the current state with the values calculated in this cycle
         self.cycle += 1
+        
+    def getInstrType(self, opcode):
+        if opcode == '0b1101111':
+            return 'J'
+        elif opcode == '0b0110011':
+            #add, sub, and, etc. need to check func3 and func7 now
+            return 'R'
+        elif opcode == '0b0010011' or opcode == '0b0000011':
+            #immediate operations
+            return 'I'
+        elif opcode == '0b1100011':
+            #branching operations
+            return 'B'
+        elif opcode == '0b0100011':
+            # Storing word:
+            return 'S'
+        elif opcode == '0b1111111':
+            return 'H'
 
     def printState(self, state, cycle):
         printstate = ["-"*70+"\n", "State after executing cycle: " + str(cycle) + "\n"]
@@ -215,9 +345,7 @@ if __name__ == "__main__":
     imem = InsMem("Imem", ioDir)
     dmem_ss = DataMem("SS", ioDir)
     dmem_fs = DataMem("FS", ioDir)
-    
-    print(imem.readInstr(0))
-    
+        
     ssCore = SingleStageCore(ioDir, imem, dmem_ss)
     fsCore = FiveStageCore(ioDir, imem, dmem_fs)
 
