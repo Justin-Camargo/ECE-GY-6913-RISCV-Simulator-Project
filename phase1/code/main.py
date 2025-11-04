@@ -58,35 +58,14 @@ class InsMem(object):
         return instruction_bin[0:9]
         pass
     
-    # def getRd(self, instruction_hex):
-    #     # Getting the two relevant bits of instruction
-    #     temp1 = instruction_hex[-3:-1]
-    #     # Converting to int and using bitwise and to get only the last 7 bits
-    #     temp2 = int(temp1,16) & 0x7C0
-    #     # Converting opcode to binary
-    #     rd = bin(temp2)
-    #     rd_padded = '0b'
-    #     # Padding with zeros:
-    #     for i in range(5-len(rd[2:])):
-    #         rd_padded += '0'
-    #     rd_padded += rd[2:]
-    #     return rd_padded
-    #     pass
-    
-    # def getRs1(self, instruction_hex):
-    #     # Getting the two relevant bits of instruction
-    #     temp1 = instruction_hex[-5:-3]
-    #     # Converting to int and using bitwise and to get only the last 7 bits
-    #     temp2 = int(temp1,16) & 0x7C
-    #     # Converting opcode to binary
-    #     rs1 = bin(temp2)
-    #     rs1_padded = '0b'
-    #     # Padding with zeros:
-    #     for i in range(5-len(rs1[2:])):
-    #         rs1_padded += '0'
-    #     rs1_padded += rs1[2:]
-    #     return rs1_padded
-    #     pass
+    def separateRInst(self, instruction_bin):
+        func7 = '0b' + instruction_bin[-32:-25]
+        rs2 = '0b' + instruction_bin[-25:-20]
+        rs1 = '0b' + instruction_bin[-20:-15]
+        func3 = '0b' + instruction_bin[-15:-12]
+        rd = '0b' + instruction_bin[-12:-7]
+        
+        return [func3, func7, rd, rs1, rs2]
         
 class DataMem(object):
     def __init__(self, name, ioDir):
@@ -193,17 +172,16 @@ class SingleStageCore(Core):
             match instr_type:
                 case 'R':
                     print('R instruction')
-                    func3 = imem.getFunc3(instruction_bin)
-                    func7 = imem.getFunc7(instruction_bin)
-                    print(f'func7 is: {func7}')
-                    # print(f'func3 is: {func3}')
-                    # print(f'func 3 should be: {instruction_bin[-14:-11]}')
+                    [func3, func7, rd, rs1, rs2] = imem.separateRInst(instruction_bin)
+                    print(func7)
+                    print(rs2)
+                    print(rs1)
+                    print(func3)
+                    print(rd)
                 case 'I':
                     print('I instruction')
                     func3 = imem.getFunc3(instruction_bin)
-                    # print(f'func3 is: {func3}')
                     func7 = imem.getFunc7(instruction_bin)
-                    print(f'func7 is: {func7}')
                 case 'J':
                     print('J instruction')
                 case 'B':
