@@ -7,7 +7,6 @@ Created on Sun Oct 12 16:43:06 2025
 
 import os
 import argparse
-from pathlib import Path
 
 MemSize = 1000 # memory size, in reality, the memory size should be 2^32, but for this lab, for the space resaon, we keep it as this large number, but the memory is still 32-bit addressable.
 
@@ -51,6 +50,14 @@ class InsMem(object):
     def getOpCode(self, instruction_bin):
         return '0b' + instruction_bin[-7:]
     
+    def getFunc3(self, instruction_bin):
+        func3 = '0b' + instruction_bin[-14:-11]
+        return func3
+    
+    def getFunc7(self, instruction_bin):
+        return instruction_bin[0:9]
+        pass
+    
     # def getRd(self, instruction_hex):
     #     # Getting the two relevant bits of instruction
     #     temp1 = instruction_hex[-3:-1]
@@ -65,14 +72,6 @@ class InsMem(object):
     #     rd_padded += rd[2:]
     #     return rd_padded
     #     pass
-    
-    def getFunc3(self, instruction_bin):
-        func3 = '0b' + instruction_bin[-14:-11]
-        return func3
-    
-    def getFunc7(self, instruction_bin):
-        return '0b' + instruction_bin[0:7]
-        pass
     
     # def getRs1(self, instruction_hex):
     #     # Getting the two relevant bits of instruction
@@ -184,26 +183,27 @@ class SingleStageCore(Core):
         instr_count = 0
         for i in range(num_instr):
             reg_address = hex(instr_count*32)
-            # instruction_hex = imem.padHexInstr(imem.readInstr(reg_address)) #hex
+            instruction_hex = imem.padHexInstr(imem.readInstr(reg_address)) #hex
             instruction_bin = imem.padBinInstr(bin(int(instruction_hex, base=16)))
    
             opcode = imem.getOpCode(instruction_bin)
             print(f'Padded instruction {i} in binary is {instruction_bin}')
-            print(f'The opcode of instruction {i} is {opcode}')
+            # print(f'The opcode of instruction {i} is {opcode}')
             instr_type = self.getInstrType(opcode)
             match instr_type:
                 case 'R':
                     print('R instruction')
                     func3 = imem.getFunc3(instruction_bin)
-                    # func7 = imem.getFunc7(instruction_hex)
-                    # print(f'func7 is: {func7}')
-                    print(f'func3 is: {func3}')
-                    print(f'func 3 should be: {instruction_bin[-14:-11]}')
+                    func7 = imem.getFunc7(instruction_bin)
+                    print(f'func7 is: {func7}')
+                    # print(f'func3 is: {func3}')
+                    # print(f'func 3 should be: {instruction_bin[-14:-11]}')
                 case 'I':
                     print('I instruction')
                     func3 = imem.getFunc3(instruction_bin)
-                    print(f'func3 is: {func3}')
-                    print(f'func 3 should be: {instruction_bin[-14:-11]}')
+                    # print(f'func3 is: {func3}')
+                    func7 = imem.getFunc7(instruction_bin)
+                    print(f'func7 is: {func7}')
                 case 'J':
                     print('J instruction')
                 case 'B':
@@ -305,33 +305,14 @@ class FiveStageCore(Core):
             wf.writelines(printstate)
 
 if __name__ == "__main__":
-    
-    # FIXME: Need to read/write from a separate directory
-    # IO_Dir = Path('C:/Users/Justin Camargo/OneDrive/Documents/School Docs - NYU/2025 Fall/Computer Systems Architecture/CSA - Project/phase1/iodir')
-    # IO_Dir = "iodir"
-    # parent_dir = r"C:\Users\Justin Camargo\OneDrive\Documents\School Docs - NYU\2025 Fall\Computer Systems Architecture\CSA - Project\phase1"
-    
-    # IO_dir_path = os.path.join(parent_dir, IO_Dir)
-    
-    # print(IO_dir_path)
-    
-    # def dir_path(path):
-    #     if os.path.isdir(path):
-    #         return path
-    #     else:
-    #         raise NotADirectoryError(path)
-            
-    # print(dir_path(IO_dir_path))
+    relative_path = "iodir/"
+    absolute_path = os.path.abspath(relative_path)
 
     #parse arguments for input file location
     parser = argparse.ArgumentParser(description='RV32I processor')
-    parser.add_argument('--iodir', default="", type=str, help='Directory containing the input files.')
+    parser.add_argument('--iodir', default=absolute_path, type=str, help='Directory for IO data')
     args = parser.parse_args()
-
-    # print(args.iodir)
-
     ioDir = os.path.abspath(args.iodir)
-    print("IO Directory:", ioDir)
 
     imem = InsMem("Imem", ioDir)
     dmem_ss = DataMem("SS", ioDir)
