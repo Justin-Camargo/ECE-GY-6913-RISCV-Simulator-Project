@@ -78,6 +78,22 @@ class InsMem(object):
         return [func3, rd, rs1, immed]
         pass
     
+    def separateSBInstr(self, instruction_bin):
+        immed_2 = '0b' + instruction_bin[-32:-25]
+        rs2 = '0b' + instruction_bin[-25:-20]
+        rs1 = '0b' + instruction_bin[-20:-15]
+        func3 = '0b' + instruction_bin[-15:-12]
+        immed_1 = '0b' + instruction_bin[-12:-7]
+        
+        return [func3, rs2, rs1, immed_2, immed_1]
+        pass
+    
+    def separateJInstr(self, instruction_bin):
+        immed = '0b' + instruction_bin[-32:-12]
+        rd = '0b' + instruction_bin[-12:-7]
+
+        return [rd, immed]
+        pass
         
 class DataMem(object):
     def __init__(self, name, ioDir):
@@ -117,7 +133,7 @@ class RegisterFile(object):
         if not isinstance(Reg_addr, int):
             raise ValueError("The register address is not an integer.")
         # Assuming Reg_addr is hex
-        Reg_addr_dec = int(Reg_addr, 16)
+        Reg_addr_dec = int('0x' + str(Reg_addr), 16)
         
         return self.Registers[Reg_addr_dec]
         pass
@@ -126,7 +142,7 @@ class RegisterFile(object):
         if not isinstance(Reg_addr, int):
             raise ValueError("The register address is not an integer.")
         # Assuming Reg_addr is hex
-        Reg_addr_dec = int(Reg_addr, 16)
+        Reg_addr_dec = int('0x' + str(Reg_addr), 16)
         
         self.Registers[Reg_addr_dec] = Wrt_reg_data
         pass
@@ -165,48 +181,74 @@ class SingleStageCore(Core):
         super(SingleStageCore, self).__init__(ioDir + "\\SS_", imem, dmem)
         self.opFilePath = ioDir + "\\StateResult_SS.txt"
 
+    def execute_R_instr(self, r_instruction_list):
+        func3 = r_instruction_list[0]
+        func7 = r_instruction_list[1]
+        # rd = r_instruction_list[2]
+        rd_int = int(hex(int(r_instruction_list[2], 2))[2:])
+        # rs1 = r_instruction_list[3]
+        rs1_int = int(hex(int(r_instruction_list[3], 2))[2:])
+        # rs2 = r_instruction_list[4]
+        rs2_int = int(hex(int(r_instruction_list[4], 2))[2:])
+        
+        # FIXME: Need to convert rf addresses to hex from binary
+        if func3 == '0b000':
+            if func7 == '0b0000000':
+                sum_var = self.myRF.readRF(rs1_int) + self.myRF.readRF(rs2_int)
+                self.myRF.writeRF(rd_int, sum_var)
+            else:
+                sub_var = self.myRF.readRF(rs1_int) - self.myRF.readRF(rs2_int)
+                self.myRF.writeRF(rd_int, sub_var)
+        elif func3 == '0b100':
+            self.myRF.writeRF(rd_int, self.myRF.readRF(rs1_int)^self.myRF.readRF(rs2_int))
+        elif func3 == '0b110':
+            self.myRF.wrtieRF(rd_int, self.myRF.readRF(rs1_int)|self.myRF.readRF(rs2_int))
+        else:
+            print()
+        return
+        
+    
     def step(self):
-        # Your implementation
-        # Get the number of instructions we will execute
-        num_instr = int(len(imem.IMem)/4)
-        # print(f'number of instructions = {num_instr}')
-        # Loop through instructions and execute each instruction:
-        instr_count = 0
-        for i in range(num_instr):
-            reg_address = hex(instr_count*32)
-            instruction_hex = imem.padHexInstr(imem.readInstr(reg_address)) #hex
-            instruction_bin = imem.padBinInstr(bin(int(instruction_hex, base=16)))
+        reg_address = hex(self.cycle*32)
+        instruction_hex = imem.padHexInstr(imem.readInstr(reg_address)) #hex
+        instruction_bin = imem.padBinInstr(bin(int(instruction_hex, base=16)))
    
-            opcode = imem.getOpCode(instruction_bin)
-            print(f'Padded instruction {i} in binary is {instruction_bin}')
-            # print(f'The opcode of instruction {i} is {opcode}')
-            instr_type = self.getInstrType(opcode)
-            match instr_type:
-                case 'R':
-                    print('R instruction')
-                    [func3, func7, rd, rs1, rs2] = imem.separateRInstr(instruction_bin)
-                case 'I':
-                    print('I instruction')
-                    [func3, rd, rs1, immediate] = imem.separateIInstr(instruction_bin)
-                    print(f'immediate = {immediate}, length = {len(immediate[2:])}')
-                    print(rs1)
-                    print(func3)
-                    print(rd)
-                case 'J':
-                    print('J instruction')
-                case 'B':
-                    print('B instruction')
-                case 'S':
-                    print('S instruction')
-                case _:
-                    print('Halt instruction')
+        opcode = imem.getOpCode(instruction_bin)
+        print(f'Padded cycle {self.cycle} in binary is {instruction_bin}')
+        # print(f'The opcode of instruction {i} is {opcode}')
+        instr_type = self.getInstrType(opcode)
+        print(f'Register on cycle{self.cycle} is: \n{self.myRF.Registers}')
+        print(f'Type of item in register on cycle {self.cycle} is {type(self.myRF.Registers[0])}')
+        match instr_type:
+            case 'R':
+                print('R instruction')
+                r_instruction_list =  imem.separateRInstr(instruction_bin)
+                # func3 = r_instruction_list[0]
+                # func7 = r_instruction_list[1]
+                # rd = r_instruction_list[2]
+                # rs1 = r_instruction_list[3]
+                # rs2 = r_instruction_list[4]
+                self.execute_R_instr(r_instruction_list)
                 
-            instr_count += 1
-                
-            # Based on properties of instruction, add, subtract, etc.
+            case 'I':
+                print('I instruction')
+                [func3, rd, rs1, immediate] = imem.separateIInstr(instruction_bin)
+            case 'J':
+                print('J instruction')
+                print(f'RF values: {self.myRF.Registers}')
+                [rd, immed] = imem.separateJInstr(instruction_bin)
+            case 'B':
+                print('B instruction')
+                [func3, rs2, rs1, immed_2, immed_1] = imem.separateSBInstr(instruction_bin)
+            case 'S':
+                print('S instruction')
+                [func3, rs2, rs1, immed_2, immed_1] = imem.separateSBInstr(instruction_bin)
+            case _:
+                print('Halt instruction')
+                self.halted == True
             
 
-        self.halted = True
+        # self.halted = True
         if self.state.IF["nop"]:
             self.halted = True
             
@@ -312,12 +354,13 @@ if __name__ == "__main__":
     while(True):
         if not ssCore.halted:
             ssCore.step()
-        
-        if not fsCore.halted:
-            fsCore.step()
-
-        if ssCore.halted and fsCore.halted:
+        else:
             break
+        # if not fsCore.halted:
+        #     fsCore.step()
+
+        # if ssCore.halted and fsCore.halted:
+        #     break
     
     # dump SS and FS data mem.
     dmem_ss.outputDataMem()
