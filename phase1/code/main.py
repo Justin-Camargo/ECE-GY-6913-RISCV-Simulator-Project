@@ -207,7 +207,6 @@ class SingleStageCore(Core):
             print()
         return
         
-    
     def step(self):
         reg_address = hex(self.cycle*32)
         instruction_hex = imem.padHexInstr(imem.readInstr(reg_address)) #hex
@@ -245,7 +244,7 @@ class SingleStageCore(Core):
                 [func3, rs2, rs1, immed_2, immed_1] = imem.separateSBInstr(instruction_bin)
             case _:
                 print('Halt instruction')
-                self.halted == True
+                self.halted = True
             
 
         # self.halted = True
