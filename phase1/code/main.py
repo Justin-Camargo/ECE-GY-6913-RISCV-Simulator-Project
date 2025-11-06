@@ -17,7 +17,6 @@ class InsMem(object):
         with open(ioDir + "\\imem.txt") as im:
             self.IMem = [data.replace("\n", "") for data in im.readlines()]
     
-    # FIXME: Need to start at ReadAddress <JRC, p:2>
     def readInstr(self, ReadAddress):
         #read instruction memory
         # Assumes all the instructions have a uniform format
@@ -27,6 +26,7 @@ class InsMem(object):
             instruction += self.IMem[i]
         instruction = hex(int(instruction,2)) 
         
+        # Returns hex value
         return instruction
         pass
     
@@ -49,15 +49,6 @@ class InsMem(object):
     
     def getOpCode(self, instruction_bin):
         return '0b' + instruction_bin[-7:]
-    
-    # DEPRECATED
-    # def getFunc3(self, instruction_bin):
-    #     func3 = '0b' + instruction_bin[-14:-11]
-    #     return func3
-    
-    # def getFunc7(self, instruction_bin):
-    #     return instruction_bin[0:9]
-    #     pass
     
     def separateRInstr(self, instruction_bin):
         func7 = '0b' + instruction_bin[-32:-25]
@@ -175,38 +166,111 @@ class Core(object):
         self.nextState = State()
         self.ext_imem = imem
         self.ext_dmem = dmem
+        
+    def executeRInstr(self, r_instruction_list):
+        func3 = r_instruction_list[0]
+        func7 = r_instruction_list[1]
+        # rd = r_instruction_list[2]
+        rd_hex_int = int(hex(int(r_instruction_list[2], 2))[2:])
+        rs1_hex_int = int(hex(int(r_instruction_list[3], 2))[2:])
+        rs2_hex_int = int(hex(int(r_instruction_list[4], 2))[2:])
+        
+        if func3 == '0b000':
+            if func7 == '0b0000000':
+                sum_var = self.addSignedNums(self.myRF.readRF(rs1_hex_int), self.myRF.readRF(rs2_hex_int)) 
+                self.myRF.writeRF(rd_hex_int, sum_var)
+            else:
+                sub_var = self.addSignedNums(self.myRF.readRF(rs1_hex_int), self.myRF.readRF(rs2_hex_int))
+                self.myRF.writeRF(rd_hex_int, sub_var)
+        elif func3 == '0b100':
+            self.myRF.writeRF(rd_hex_int, self.myRF.readRF(rs1_hex_int)^self.myRF.readRF(rs2_hex_int))
+        elif func3 == '0b110':
+            self.myRF.wrtieRF(rd_hex_int, self.myRF.readRF(rs1_hex_int)|self.myRF.readRF(rs2_hex_int))
+        else:
+            print('This R type instruction is not able to be executed with this RISC-V core.')
+        return
+        
+    
+    def executeIInstr(self, i_instruction_list):
+        func3 = i_instruction_list[0]
+        rd_hex_int = int(hex(int(i_instruction_list[1], 2))[2:])
+        # rs1_bin = i_instruction_list[2]
+        rs1_hex_int = int(hex(int(i_instruction_list[2], 2))[2:])
+        immed_bin = i_instruction_list[3]
+        immed_hex_int = int(hex(int(i_instruction_list[3], 2))[2:])
+        
+        if func3 == '0b000':
+            # AddI
+            self.myRF.writeRF(rd_hex_int, self.addSignedNums(self.myRF.readRF(rs1_hex_int),self.getSignExtVal(immed_bin)))
+        elif func3 == '0b010':
+            # LW
+            self.myRF.writeRF(rd_hex_int, self.addSignedNums(self.myRF.readRF(rs1_hex_int+self.getSignExtVal(immed_bin))))
+        elif func3 == '0b100':
+            # XORI
+            pass
+        elif func3 == '0b110':
+            # ORI
+            pass
+        elif func3 == '0b111':
+            # ANDI
+            pass
+        
+        return
+        
+    #FIXME: Need to complete this method
+    # - Need to properly construct sign extended immediate value to be saved
+    def executeSInstr(self, s_instruction_list):
+        # [func3, rs2, rs1, immed_2, immed_1]
+        func3 = s_instruction_list[0]
+        rs2_hex_int = int(hex(int(s_instruction_list[1], 2))[2:])
+        rs1_hex_int = int(hex(int(s_instruction_list[2], 2))[2:])
+        
+        
+        pass
+    
+    #FIXME: Complete this method
+    # - Need to bitwise xor with (-1?) to invert value_hex and then add 1
+    def getTwosComplement(self, value_hex):
+        comparison = '0x'
+        for i in range(len(value_hex)-2):
+            comparison += 'F'
+        inverted_val = int(value_hex,16)^int(comparison, 16)
+        complement = inverted_val + 1
+        complement_hex = hex(int(str(complement)))
+        return complement_hex
+    
+    #FIXME: Fix this method
+    # - Need to rework method so that the value taken in is hex not binary.
+    def getSignExtVal(self, value_bin):
+        sign_extension = ''
+        if value_bin[2] == '0':
+            for i in range(0, 32-len(value_bin)):
+                sign_extension == '0'
+            return hex(int(value_bin[0:2] + sign_extension + value_bin[3:],2))
+        else:
+            for i in range(0, 32-len(value_bin)):
+                sign_extension += '1'
+            return hex(int(value_bin[0:2] + sign_extension + value_bin[3:],2))
+        return
+    
+    def addSignedNums(self, val_1_hex, val_2_hex):
+        ans = 0
+        if int(val_1_hex[2], 16) < 8 and int(val_2_hex[2], 16) < 8: #Both positive
+            ans = hex(int(val_1_hex, 16) + int(val_2_hex, 16))[0:33] #32-bit limit + 0x hex designator
+        elif int(val_1_hex[2], 16) < 8  and int(val_2_hex[2], 16) >= 8: #1 pos., 2 neg.
+            ans = hex(int(val_1_hex, 16) + int(self.getTwosComplement(val_2_hex), 16))[0:33]
+        elif int(val_1_hex[2], 16) >= 8  and int(val_2_hex[2], 16) < 8: #1 neg., 2 pos.
+            ans = hex(int(self.getTwosComplement(val_1_hex), 16) + int(val_2_hex, 16))[0:33]
+        else:
+            ans = hex(int(self.getTwosComplement(val_1_hex), 16) + int(self.getTwosComplement(val_2_hex, 16)))[0:33]
+        return ans
+            
 
 class SingleStageCore(Core):
     def __init__(self, ioDir, imem, dmem):
         super(SingleStageCore, self).__init__(ioDir + "\\SS_", imem, dmem)
         self.opFilePath = ioDir + "\\StateResult_SS.txt"
-
-    def execute_R_instr(self, r_instruction_list):
-        func3 = r_instruction_list[0]
-        func7 = r_instruction_list[1]
-        # rd = r_instruction_list[2]
-        rd_int = int(hex(int(r_instruction_list[2], 2))[2:])
-        # rs1 = r_instruction_list[3]
-        rs1_int = int(hex(int(r_instruction_list[3], 2))[2:])
-        # rs2 = r_instruction_list[4]
-        rs2_int = int(hex(int(r_instruction_list[4], 2))[2:])
-        
-        # FIXME: Need to convert rf addresses to hex from binary
-        if func3 == '0b000':
-            if func7 == '0b0000000':
-                sum_var = self.myRF.readRF(rs1_int) + self.myRF.readRF(rs2_int)
-                self.myRF.writeRF(rd_int, sum_var)
-            else:
-                sub_var = self.myRF.readRF(rs1_int) - self.myRF.readRF(rs2_int)
-                self.myRF.writeRF(rd_int, sub_var)
-        elif func3 == '0b100':
-            self.myRF.writeRF(rd_int, self.myRF.readRF(rs1_int)^self.myRF.readRF(rs2_int))
-        elif func3 == '0b110':
-            self.myRF.wrtieRF(rd_int, self.myRF.readRF(rs1_int)|self.myRF.readRF(rs2_int))
-        else:
-            print()
-        return
-        
+            
     def step(self):
         reg_address = hex(self.cycle*32)
         instruction_hex = imem.padHexInstr(imem.readInstr(reg_address)) #hex
@@ -222,16 +286,11 @@ class SingleStageCore(Core):
             case 'R':
                 print('R instruction')
                 r_instruction_list =  imem.separateRInstr(instruction_bin)
-                # func3 = r_instruction_list[0]
-                # func7 = r_instruction_list[1]
-                # rd = r_instruction_list[2]
-                # rs1 = r_instruction_list[3]
-                # rs2 = r_instruction_list[4]
-                self.execute_R_instr(r_instruction_list)
-                
+                # self.executeRInstr(r_instruction_list)
             case 'I':
                 print('I instruction')
-                [func3, rd, rs1, immediate] = imem.separateIInstr(instruction_bin)
+                i_instruction_list = imem.separateIInstr(instruction_bin)
+                # self.executeIInstr(i_instruction_list)
             case 'J':
                 print('J instruction')
                 print(f'RF values: {self.myRF.Registers}')
@@ -242,6 +301,8 @@ class SingleStageCore(Core):
             case 'S':
                 print('S instruction')
                 [func3, rs2, rs1, immed_2, immed_1] = imem.separateSBInstr(instruction_bin)
+                s_instruction_list = imem.separateSBInstr(instruction_bin)
+                # self.executeSInstr(s_instruction_list)
             case _:
                 print('Halt instruction')
                 self.halted = True
@@ -349,6 +410,12 @@ if __name__ == "__main__":
         
     ssCore = SingleStageCore(ioDir, imem, dmem_ss)
     fsCore = FiveStageCore(ioDir, imem, dmem_fs)
+    
+    hex1 = '0x00001'
+    hex2 = '0x10001'
+    hex3 = '0x80001'
+    
+    print(f'checking hex addition: {ssCore.addSignedNums(hex3, hex1)}')
 
     while(True):
         if not ssCore.halted:
