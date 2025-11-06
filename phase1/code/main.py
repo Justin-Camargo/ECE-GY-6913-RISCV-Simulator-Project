@@ -30,22 +30,22 @@ class InsMem(object):
         return instruction
         pass
     
-    def padHexInstr(self, instruction):
-        instruction_padded = '0x'
-        for i in range(8-len(instruction[2:])):
-            instruction_padded += '0'
-        instruction_padded += instruction[2:]
-        #return padded hex value
-        return instruction_padded
-        pass
+    # def padHexInstr(self, instruction):
+    #     instruction_padded = '0x'
+    #     for i in range(8-len(instruction[2:])):
+    #         instruction_padded += '0'
+    #     instruction_padded += instruction[2:]
+    #     #return padded hex value
+    #     return instruction_padded
+    #     pass
     
-    def padBinInstr(self, instruction):
-        instruction_padded = '0b'
-        for i in range(32-len(instruction[2:])):
-            instruction_padded += '0'
-        instruction_padded += instruction[2:]
-        return instruction_padded
-        pass
+    # def padBinInstr(self, instruction):
+    #     instruction_padded = '0b'
+    #     for i in range(32-len(instruction[2:])):
+    #         instruction_padded += '0'
+    #     instruction_padded += instruction[2:]
+    #     return instruction_padded
+    #     pass
     
     def getOpCode(self, instruction_bin):
         return '0b' + instruction_bin[-7:]
@@ -228,8 +228,6 @@ class Core(object):
         
         pass
     
-    #FIXME: Complete this method
-    # - Need to bitwise xor with (-1?) to invert value_hex and then add 1
     def getTwosComplement(self, value_hex):
         comparison = '0x'
         for i in range(len(value_hex)-2):
@@ -256,14 +254,35 @@ class Core(object):
     def addSignedNums(self, val_1_hex, val_2_hex):
         ans = 0
         if int(val_1_hex[2], 16) < 8 and int(val_2_hex[2], 16) < 8: #Both positive
-            ans = hex(int(val_1_hex, 16) + int(val_2_hex, 16))[0:33] #32-bit limit + 0x hex designator
+            ans = hex(int(val_1_hex, 16) + int(val_2_hex, 16))
+            if(len(ans) == 10 and int(ans[2], 16) > 7):
+                print('Addition overflow')                
         elif int(val_1_hex[2], 16) < 8  and int(val_2_hex[2], 16) >= 8: #1 pos., 2 neg.
-            ans = hex(int(val_1_hex, 16) + int(self.getTwosComplement(val_2_hex), 16))[0:33]
+            ans = hex(int(val_1_hex, 16) + int(self.getTwosComplement(val_2_hex), 16))
         elif int(val_1_hex[2], 16) >= 8  and int(val_2_hex[2], 16) < 8: #1 neg., 2 pos.
-            ans = hex(int(self.getTwosComplement(val_1_hex), 16) + int(val_2_hex, 16))[0:33]
+            ans = hex(int(self.getTwosComplement(val_1_hex), 16) + int(val_2_hex, 16))
         else:
-            ans = hex(int(self.getTwosComplement(val_1_hex), 16) + int(self.getTwosComplement(val_2_hex, 16)))[0:33]
+            ans = hex(int(self.getTwosComplement(val_1_hex), 16) + int(self.getTwosComplement(val_2_hex, 16)))
+            
+        ans = self.padHexVal(ans)[0:10] #Only keeping 32 bits/8 bytes with 0x prefix
         return ans
+    
+    def padHexVal(self, val_hex):
+        val_padded = '0x'
+        for i in range(8-len(val_hex[2:])):
+            val_padded += '0'
+        val_padded += val_hex[2:]
+        #return padded hex value
+        return val_padded
+        pass
+    
+    def padBinVal(self, val_bin):
+        val_padded = '0b'
+        for i in range(32-len(val_bin[2:])):
+            val_padded += '0'
+        val_padded += val_bin[2:]
+        return val_padded
+        pass
             
 
 class SingleStageCore(Core):
@@ -273,11 +292,11 @@ class SingleStageCore(Core):
             
     def step(self):
         reg_address = hex(self.cycle*32)
-        instruction_hex = imem.padHexInstr(imem.readInstr(reg_address)) #hex
-        instruction_bin = imem.padBinInstr(bin(int(instruction_hex, base=16)))
+        instruction_hex = self.padHexVal(imem.readInstr(reg_address)) #hex
+        instruction_bin = self.padBinVal(bin(int(instruction_hex, base=16)))
    
         opcode = imem.getOpCode(instruction_bin)
-        print(f'Padded cycle {self.cycle} in binary is {instruction_bin}')
+        print(f'Padded cycle {self.cycle} in binary is {instruction_bin} with length of {len(instruction_bin)}')
         # print(f'The opcode of instruction {i} is {opcode}')
         instr_type = self.getInstrType(opcode)
         print(f'Register on cycle{self.cycle} is: \n{self.myRF.Registers}')
@@ -411,11 +430,13 @@ if __name__ == "__main__":
     ssCore = SingleStageCore(ioDir, imem, dmem_ss)
     fsCore = FiveStageCore(ioDir, imem, dmem_fs)
     
-    hex1 = '0x00001'
-    hex2 = '0x10001'
-    hex3 = '0x80001'
+    # hex1 = '0x00001'
+    # hex2 = '0x10001'
+    # hex3 = '0x80001'
+    # hex4 = '0x7FFFFFFF'
+    # hex5 = '0x7FFFFFFF'
     
-    print(f'checking hex addition: {ssCore.addSignedNums(hex3, hex1)}')
+    # print(f'checking hex addition: {ssCore.addSignedNums(hex4, hex5)}')
 
     while(True):
         if not ssCore.halted:
