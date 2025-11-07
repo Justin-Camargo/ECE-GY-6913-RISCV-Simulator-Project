@@ -76,16 +76,16 @@ class DataMem(object):
         with open(ioDir + "\\dmem.txt") as dm:
             self.DMem = [data.replace("\n", "") for data in dm.readlines()]
 
-    def readInstr(self, ReadAddress):
+    def readDataMem(self, ReadAddress):
         #read data memory
         start_row = int(int(ReadAddress, 16)/8)
-        instruction = ""
+        memory_val = ""
         for i in range(start_row, start_row + 4, 1):
-            instruction += self.DMem[i]
-        instruction = hex(int(instruction,2)) 
+            memory_val += self.DMem[i]
+        memory_val = hex(int(memory_val,2)) 
         
         # Returns hex value
-        return instruction
+        return memory_val
         pass
         
     def writeDataMem(self, Address, WriteData):
@@ -162,19 +162,19 @@ class Core(object):
             if func7 == '0b0000000':
                 sum_var = self.addSignedNums(self.myRF.readRF(rs1_hex_int), self.myRF.readRF(rs2_hex_int)) 
                 self.myRF.writeRF(rd_hex_int, sum_var)
-                print("Writing to register: {r_instruction_list[2]}")
+                print("Writing sum to register: {r_instruction_list[2]}")
             else:
                 sub_var = self.addSignedNums(self.myRF.readRF(rs1_hex_int), self.myRF.readRF(rs2_hex_int))
                 self.myRF.writeRF(rd_hex_int, sub_var)
-                print("Writing to register: {r_instruction_list[2]}")
+                print("Writing to difference to register: {r_instruction_list[2]}")
         elif func3 == '0b100':
             # Computes XOR between two registers converts the output to hex and pads it
             self.myRF.writeRF(rd_hex_int, self.padHexVal(hex(int(self.myRF.readRF(rs1_hex_int), 16)^int(self.myRF.readRF(rs2_hex_int), 16))))
-            print("Writing to register: {r_instruction_list[2]}")
+            print("Writing XOR to register: {r_instruction_list[2]}")
         elif func3 == '0b110':
             # Computes OR between two registers converts the output to hex and pads it
             self.myRF.wrtieRF(rd_hex_int, self.padHexVal(hex(int(self.myRF.readRF(rs1_hex_int), 16)|int(self.myRF.readRF(rs2_hex_int), 16))))
-            print("Writing to register: {r_instruction_list[2]}")
+            print("Writing OR to register: {r_instruction_list[2]}")
         else:
             print('This R type instruction is not able to be executed with this RISC-V core.')
         return
@@ -188,27 +188,37 @@ class Core(object):
         # print(f'rs1_hex_int is {rs1_hex_int}')
         immed_bin = i_instruction_list[3]
         immed_hex = hex(int(i_instruction_list[3], 2))
+        print(type(immed_bin), immed_bin)
+        immed_hex_byte_addressed = hex(round(int(i_instruction_list[3], 2)/4))
         
         if func3 == '0b000':
             # AddI
             # Might need a helper function to ensure that values read/written to RF are in desired format
             sum_val = self.addSignedNums('0x' + str(self.myRF.readRF(rs1_hex_int)),self.getSignExtVal(immed_hex))
             self.myRF.writeRF(rd_hex_int, sum_val)
-            print(f'adding immediate value {i_instruction_list[3]} to {i_instruction_list[2]} and writing to {i_instruction_list[1]}')
+            print(f'adding immediate value {immed_hex} to {rs1_hex} and writing to {i_instruction_list[1]}')
             print('\n')
         elif func3 == '0b010':
             # LW
-            #FIXME: Need to write to data memory not RF
-            # self.myRF.writeRF(rd_hex_int, self.myRF.readRF(int(self.addSignedNums(rs1_hex,self.getSignExtVal(immed_hex))[2:])))
-            self.ext_dmem.writeDataMem(rd_hex_int, self.myRF.readRF(int(self.addSignedNums(rs1_hex,self.getSignExtVal(immed_hex))[2:])))
+            address_sum = self.addSignedNums(rs1_hex,self.getSignExtVal(immed_hex_byte_addressed))
+            # converted_sum = int(address_sum[2:])
+            # Might need to check that data memory is written as hex values
+            data_mem = self.ext_dmem.readDataMem(address_sum)
+            self.myRF.writeRF(rd_hex_int, data_mem)
+            print(f'Writing to address {'0x' + str(rd_hex_int)} with value at address {address_sum}')
+            print(f'Written data is: {data_mem}')
+            print('')
         elif func3 == '0b100':
             # XORI
+            print('XORI')
             pass
         elif func3 == '0b110':
             # ORI
+            print('ORI')
             pass
         elif func3 == '0b111':
             # ANDI
+            print('ANDI')
             pass
         
         return
@@ -217,11 +227,17 @@ class Core(object):
     # - Need to properly construct sign extended immediate value to be saved
     def executeSInstr(self, s_instruction_list):
         # [func3, rs2, rs1, immed_2, immed_1]
-        func3 = s_instruction_list[0]
-        rs2_hex_int = int(hex(int(s_instruction_list[1], 2))[2:])
+        # func3 = s_instruction_list[0]
+        rs2_hex = hex(int(s_instruction_list[1], 2))
         rs1_hex_int = int(hex(int(s_instruction_list[2], 2))[2:])
+        immed_2 = s_instruction_list[3]
+        immed_1 = s_instruction_list[4]
+        immed_comb_bin = immed_2+immed_1[2:]
+        immed_comb_hex_byte_addressed = hex(int(immed_comb_bin, 2)/4) 
         
-        pass
+        reg_mem = self.myRF.readRF(self.addSignedNums(rs2_hex, immed_comb_hex_byte_addressed))
+        self.ext_dmem.writeDataMem(rs1_hex_int, reg_mem)
+        return
     
     def getTwosComplement(self, value_hex):
         comparison = '0x'
