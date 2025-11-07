@@ -160,11 +160,11 @@ class Core(object):
         
         if func3 == '0b000':
             if func7 == '0b0000000':
-                sum_var = self.addSignedNums(self.myRF.readRF(rs1_hex_int), self.myRF.readRF(rs2_hex_int)) 
+                sum_var = self.addSignedNums(self.formatMemVal(self.myRF.readRF(rs1_hex_int)), self.formatMemVal(self.myRF.readRF(rs2_hex_int))) 
                 self.myRF.writeRF(rd_hex_int, sum_var)
                 print("Writing sum to register: {r_instruction_list[2]}")
             else:
-                sub_var = self.addSignedNums(self.myRF.readRF(rs1_hex_int), self.myRF.readRF(rs2_hex_int))
+                sub_var = self.addSignedNums(self.formatMemVal(self.myRF.readRF(rs1_hex_int)), self.formatMemVal(self.myRF.readRF(rs2_hex_int)))
                 self.myRF.writeRF(rd_hex_int, sub_var)
                 print("Writing to difference to register: {r_instruction_list[2]}")
         elif func3 == '0b100':
@@ -179,7 +179,6 @@ class Core(object):
             print('This R type instruction is not able to be executed with this RISC-V core.')
         return
         
-    
     def executeIInstr(self, i_instruction_list):
         func3 = i_instruction_list[0]
         rd_hex_int = int(hex(int(i_instruction_list[1], 2))[2:])
@@ -193,8 +192,7 @@ class Core(object):
         
         if func3 == '0b000':
             # AddI
-            # Might need a helper function to ensure that values read/written to RF are in desired format
-            sum_val = self.addSignedNums('0x' + str(self.myRF.readRF(rs1_hex_int)),self.getSignExtVal(immed_hex))
+            sum_val = self.addSignedNums(self.formatMemVal(self.myRF.readRF(rs1_hex_int)),self.getSignExtVal(immed_hex))
             self.myRF.writeRF(rd_hex_int, sum_val)
             print(f'adding immediate value {immed_hex} to {rs1_hex} and writing to {i_instruction_list[1]}')
             print('\n')
@@ -202,8 +200,7 @@ class Core(object):
             # LW
             address_sum = self.addSignedNums(rs1_hex,self.getSignExtVal(immed_hex_byte_addressed))
             # converted_sum = int(address_sum[2:])
-            # Might need to check that data memory is written as hex values
-            data_mem = self.ext_dmem.readDataMem(address_sum)
+            data_mem = self.formatMemVal(self.ext_dmem.readDataMem(address_sum))
             self.myRF.writeRF(rd_hex_int, data_mem)
             print(f'Writing to address {'0x' + str(rd_hex_int)} with value at address {address_sum}')
             print(f'Written data is: {data_mem}')
@@ -211,14 +208,20 @@ class Core(object):
         elif func3 == '0b100':
             # XORI
             print('XORI')
+            comparison = int(self.formatMemVal(self.myRF.readRF(rs1_hex_int)), 16)^int(self.formatMemVal(self.getSignExtVal(immed_hex)), 16)
+            self.myRF.writeRF(rd_hex_int, hex(comparison))
             pass
         elif func3 == '0b110':
             # ORI
             print('ORI')
+            comparison = int(self.formatMemVal(self.myRF.readRF(rs1_hex_int)), 16)|int(self.formatMemVal(self.getSignExtVal(immed_hex)), 16)
+            self.myRF.writeRF(rd_hex_int, hex(comparison))
             pass
         elif func3 == '0b111':
             # ANDI
             print('ANDI')
+            comparison = int(self.formatMemVal(self.myRF.readRF(rs1_hex_int)), 16)&int(self.formatMemVal(self.getSignExtVal(immed_hex)), 16)
+            self.myRF.writeRF(rd_hex_int, hex(comparison))
             pass
         
         return
@@ -239,6 +242,12 @@ class Core(object):
         self.ext_dmem.writeDataMem(rs1_hex_int, reg_mem)
         return
     
+    def executeJInstr(self, j_instruction_list):
+        pass
+    
+    def executeBInstr(self, b_instruction_list):
+        pass
+    
     def getTwosComplement(self, value_hex):
         comparison = '0x'
         for i in range(len(value_hex)-2):
@@ -248,8 +257,6 @@ class Core(object):
         complement_hex = hex(int(str(complement)))
         return complement_hex
     
-    #FIXME: Fix this method
-    # - Need to rework method so that the value taken in is hex not binary.
     def getSignExtVal(self, value_hex):
         sign_extension = ''
         if int(value_hex[2], 16) < 8:
@@ -258,7 +265,7 @@ class Core(object):
             return value_hex[0:2] + sign_extension + value_hex[2:]
         else:
             for i in range(0, 8-len(value_hex[2:])):
-                sign_extension += 'F'
+                sign_extension += 'f'
             return value_hex[0:2] + sign_extension + value_hex[2:]
         return
     
@@ -277,6 +284,15 @@ class Core(object):
             
         ans = self.padHexVal(ans)[0:10] #Only keeping 32 bits/8 bytes with 0x prefix
         return ans
+    
+    def formatMemVal(self, mem_val):
+        """ Checks type of mem_val and returns a hex string"""
+        if type(mem_val) == str and mem_val[0:2] == '0x':
+            return mem_val
+        elif type(mem_val) == str and mem_val[0:2] == '0b':
+            return hex(int(mem_val, 2))
+        else: #Assumes memory is int with base 16
+            return '0x' + str(mem_val)
     
     def padHexVal(self, val_hex):
         val_padded = '0x'
@@ -302,21 +318,24 @@ class SingleStageCore(Core):
         self.opFilePath = ioDir + "\\StateResult_SS.txt"
             
     def step(self):
-        reg_address = hex(self.cycle*32)
-        instruction_hex = self.padHexVal(imem.readInstr(reg_address)) #hex
+        reg_address = hex(self.state.IF["PC"]*8)
+        instruction_hex_unpadded = imem.readInstr(reg_address)
+        instruction_hex = self.padHexVal(instruction_hex_unpadded) #hex
         instruction_bin = self.padBinVal(bin(int(instruction_hex, base=16)))
+        self.state.IF["PC"] += 4
+        self.nextState.IF["PC"] += 4
    
         opcode = imem.getOpCode(instruction_bin)
         print(f'Padded cycle {self.cycle} in binary is {instruction_bin} with length of {len(instruction_bin)}')
         # print(f'The opcode of instruction {i} is {opcode}')
         instr_type = self.getInstrType(opcode)
         print(f'Register on cycle{self.cycle} is: \n{self.myRF.Registers}')
-        print(f'Type of item in register on cycle {self.cycle} is {type(self.myRF.Registers[0])}')
+        # print(f'Type of item in register on cycle {self.cycle} is {type(self.myRF.Registers[0])}')
         match instr_type:
             case 'R':
                 print('R instruction')
                 r_instruction_list =  imem.separateRInstr(instruction_bin)
-                # self.executeRInstr(r_instruction_list)
+                self.executeRInstr(r_instruction_list)
             case 'I':
                 print('I instruction')
                 i_instruction_list = imem.separateIInstr(instruction_bin)
@@ -337,7 +356,7 @@ class SingleStageCore(Core):
                 print('Halt instruction')
                 self.halted = True
             
-
+        print('')
         # self.halted = True
         if self.state.IF["nop"]:
             self.halted = True
@@ -440,14 +459,6 @@ if __name__ == "__main__":
         
     ssCore = SingleStageCore(ioDir, imem, dmem_ss)
     fsCore = FiveStageCore(ioDir, imem, dmem_fs)
-    
-    # hex1 = '0x00001'
-    # hex2 = '0x10001'
-    # hex3 = '0x80001'
-    # hex4 = '0x7FFFFFFF'
-    # hex5 = '0x7FFFFFFF'
-    
-    # print(f'checking hex addition: {ssCore.addSignedNums(hex4, hex5)}')
 
     while(True):
         if not ssCore.halted:
