@@ -30,23 +30,6 @@ class InsMem(object):
         return instruction
         pass
     
-    # def padHexInstr(self, instruction):
-    #     instruction_padded = '0x'
-    #     for i in range(8-len(instruction[2:])):
-    #         instruction_padded += '0'
-    #     instruction_padded += instruction[2:]
-    #     #return padded hex value
-    #     return instruction_padded
-    #     pass
-    
-    # def padBinInstr(self, instruction):
-    #     instruction_padded = '0b'
-    #     for i in range(32-len(instruction[2:])):
-    #         instruction_padded += '0'
-    #     instruction_padded += instruction[2:]
-    #     return instruction_padded
-    #     pass
-    
     def getOpCode(self, instruction_bin):
         return '0b' + instruction_bin[-7:]
     
@@ -179,13 +162,19 @@ class Core(object):
             if func7 == '0b0000000':
                 sum_var = self.addSignedNums(self.myRF.readRF(rs1_hex_int), self.myRF.readRF(rs2_hex_int)) 
                 self.myRF.writeRF(rd_hex_int, sum_var)
+                print("Writing to register: {r_instruction_list[2]}")
             else:
                 sub_var = self.addSignedNums(self.myRF.readRF(rs1_hex_int), self.myRF.readRF(rs2_hex_int))
                 self.myRF.writeRF(rd_hex_int, sub_var)
+                print("Writing to register: {r_instruction_list[2]}")
         elif func3 == '0b100':
-            self.myRF.writeRF(rd_hex_int, self.myRF.readRF(rs1_hex_int)^self.myRF.readRF(rs2_hex_int))
+            # Computes XOR between two registers converts the output to hex and pads it
+            self.myRF.writeRF(rd_hex_int, self.padHexVal(hex(int(self.myRF.readRF(rs1_hex_int), 16)^int(self.myRF.readRF(rs2_hex_int), 16))))
+            print("Writing to register: {r_instruction_list[2]}")
         elif func3 == '0b110':
-            self.myRF.wrtieRF(rd_hex_int, self.myRF.readRF(rs1_hex_int)|self.myRF.readRF(rs2_hex_int))
+            # Computes OR between two registers converts the output to hex and pads it
+            self.myRF.wrtieRF(rd_hex_int, self.padHexVal(hex(int(self.myRF.readRF(rs1_hex_int), 16)|int(self.myRF.readRF(rs2_hex_int), 16))))
+            print("Writing to register: {r_instruction_list[2]}")
         else:
             print('This R type instruction is not able to be executed with this RISC-V core.')
         return
@@ -194,17 +183,24 @@ class Core(object):
     def executeIInstr(self, i_instruction_list):
         func3 = i_instruction_list[0]
         rd_hex_int = int(hex(int(i_instruction_list[1], 2))[2:])
-        # rs1_bin = i_instruction_list[2]
+        rs1_hex = hex(int(i_instruction_list[2], 2))
         rs1_hex_int = int(hex(int(i_instruction_list[2], 2))[2:])
+        # print(f'rs1_hex_int is {rs1_hex_int}')
         immed_bin = i_instruction_list[3]
-        immed_hex_int = int(hex(int(i_instruction_list[3], 2))[2:])
+        immed_hex = hex(int(i_instruction_list[3], 2))
         
         if func3 == '0b000':
             # AddI
-            self.myRF.writeRF(rd_hex_int, self.addSignedNums(self.myRF.readRF(rs1_hex_int),self.getSignExtVal(immed_bin)))
+            # Might need a helper function to ensure that values read/written to RF are in desired format
+            sum_val = self.addSignedNums('0x' + str(self.myRF.readRF(rs1_hex_int)),self.getSignExtVal(immed_hex))
+            self.myRF.writeRF(rd_hex_int, sum_val)
+            print(f'adding immediate value {i_instruction_list[3]} to {i_instruction_list[2]} and writing to {i_instruction_list[1]}')
+            print('\n')
         elif func3 == '0b010':
             # LW
-            self.myRF.writeRF(rd_hex_int, self.addSignedNums(self.myRF.readRF(rs1_hex_int+self.getSignExtVal(immed_bin))))
+            #FIXME: Need to write to data memory not RF
+            # self.myRF.writeRF(rd_hex_int, self.myRF.readRF(int(self.addSignedNums(rs1_hex,self.getSignExtVal(immed_hex))[2:])))
+            self.ext_dmem.writeDataMem(rd_hex_int, self.myRF.readRF(int(self.addSignedNums(rs1_hex,self.getSignExtVal(immed_hex))[2:])))
         elif func3 == '0b100':
             # XORI
             pass
@@ -225,7 +221,6 @@ class Core(object):
         rs2_hex_int = int(hex(int(s_instruction_list[1], 2))[2:])
         rs1_hex_int = int(hex(int(s_instruction_list[2], 2))[2:])
         
-        
         pass
     
     def getTwosComplement(self, value_hex):
@@ -239,16 +234,16 @@ class Core(object):
     
     #FIXME: Fix this method
     # - Need to rework method so that the value taken in is hex not binary.
-    def getSignExtVal(self, value_bin):
+    def getSignExtVal(self, value_hex):
         sign_extension = ''
-        if value_bin[2] == '0':
-            for i in range(0, 32-len(value_bin)):
+        if int(value_hex[2], 16) < 8:
+            for i in range(0, 8-len(value_hex[2:])):
                 sign_extension == '0'
-            return hex(int(value_bin[0:2] + sign_extension + value_bin[3:],2))
+            return value_hex[0:2] + sign_extension + value_hex[2:]
         else:
-            for i in range(0, 32-len(value_bin)):
-                sign_extension += '1'
-            return hex(int(value_bin[0:2] + sign_extension + value_bin[3:],2))
+            for i in range(0, 8-len(value_hex[2:])):
+                sign_extension += 'F'
+            return value_hex[0:2] + sign_extension + value_hex[2:]
         return
     
     def addSignedNums(self, val_1_hex, val_2_hex):
@@ -309,7 +304,7 @@ class SingleStageCore(Core):
             case 'I':
                 print('I instruction')
                 i_instruction_list = imem.separateIInstr(instruction_bin)
-                # self.executeIInstr(i_instruction_list)
+                self.executeIInstr(i_instruction_list)
             case 'J':
                 print('J instruction')
                 print(f'RF values: {self.myRF.Registers}')
