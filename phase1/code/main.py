@@ -22,13 +22,22 @@ class InsMem(object):
         # Assumes all the instructions have a uniform format
         start_row = int(int(ReadAddress, 16)/8)
         instruction = ""
-        for i in range(start_row, start_row + 4, 1):
+        end_row = 0
+        if start_row < len(self.IMem):
+            end_row = start_row+4
+        else:
+            end_row = len(self.IMem)
+        for i in range(start_row, end_row, 1):
             instruction += self.IMem[i]
-        instruction = hex(int(instruction,2)) 
         
-        # Returns hex value
-        return instruction
-        pass
+        if instruction == '':
+            return instruction
+        else:
+            instruction = hex(int(instruction,2)) 
+        
+            # Returns hex value
+            return instruction
+        
     
     def getOpCode(self, instruction_bin):
         return '0b' + instruction_bin[-7:]
@@ -78,7 +87,8 @@ class DataMem(object):
 
     def readDataMem(self, ReadAddress):
         #read data memory
-        start_row = int(int(ReadAddress, 16)/8)
+        # start_row = int(int(ReadAddress, 16)/8)
+        start_row = round(ReadAddress/8)
         memory_val = ""
         for i in range(start_row, start_row + 4, 1):
             memory_val += self.DMem[i]
@@ -106,19 +116,19 @@ class RegisterFile(object):
     def readRF(self, Reg_addr):
         if not isinstance(Reg_addr, int):
             raise ValueError("The register address is not an integer.")
-        # Assuming Reg_addr is hex
-        Reg_addr_dec = int('0x' + str(Reg_addr), 16)
+        # Assuming Reg_addr is base 10
+        # Reg_addr_dec = int('0x' + str(Reg_addr), 16)
         
-        return self.Registers[Reg_addr_dec]
+        return self.Registers[Reg_addr]
         pass
     
     def writeRF(self, Reg_addr, Wrt_reg_data):
         if not isinstance(Reg_addr, int):
             raise ValueError("The register address is not an integer.")
         # Assuming Reg_addr is hex
-        Reg_addr_dec = int('0x' + str(Reg_addr), 16)
+        # Reg_addr_dec = int('0x' + str(Reg_addr), 16)
         
-        self.Registers[Reg_addr_dec] = Wrt_reg_data
+        self.Registers[Reg_addr] = Wrt_reg_data
         pass
          
     def outputRF(self, cycle):
@@ -154,46 +164,46 @@ class Core(object):
         func3 = r_instruction_list[0]
         func7 = r_instruction_list[1]
         # rd = r_instruction_list[2]
-        rd_hex_int = int(hex(int(r_instruction_list[2], 2))[2:])
-        rs1_hex_int = int(hex(int(r_instruction_list[3], 2))[2:])
-        rs2_hex_int = int(hex(int(r_instruction_list[4], 2))[2:])
+        rd_int = int(r_instruction_list[2], 2)
+        rs1_int = int(r_instruction_list[3], 2)
+        rs2_int = int(r_instruction_list[4], 2)
         
         if func3 == '0b000':
             if func7 == '0b0000000':
-                sum_var = self.addSignedNums(self.formatMemVal(self.myRF.readRF(rs1_hex_int)), self.formatMemVal(self.myRF.readRF(rs2_hex_int))) 
-                self.myRF.writeRF(rd_hex_int, sum_var)
+                sum_var = self.addSignedNums(self.formatMemVal(self.myRF.readRF(rs1_int)), self.formatMemVal(self.myRF.readRF(rs2_int))) 
+                self.myRF.writeRF(rd_int, sum_var)
                 print("Writing sum to register: {r_instruction_list[2]}")
             else:
-                sub_var = self.addSignedNums(self.formatMemVal(self.myRF.readRF(rs1_hex_int)), self.formatMemVal(self.myRF.readRF(rs2_hex_int)))
-                self.myRF.writeRF(rd_hex_int, sub_var)
+                sub_var = self.addSignedNums(self.formatMemVal(self.myRF.readRF(rs1_int)), self.formatMemVal(self.myRF.readRF(rs2_int)))
+                self.myRF.writeRF(rd_int, sub_var)
                 print("Writing to difference to register: {r_instruction_list[2]}")
         elif func3 == '0b100':
             # Computes XOR between two registers converts the output to hex and pads it
-            self.myRF.writeRF(rd_hex_int, self.padHexVal(hex(int(self.myRF.readRF(rs1_hex_int), 16)^int(self.myRF.readRF(rs2_hex_int), 16))))
+            self.myRF.writeRF(rd_int, self.padHexVal(hex(int(self.myRF.readRF(rs1_int), 16)^int(self.myRF.readRF(rs2_int), 16))))
             print("Writing XOR to register: {r_instruction_list[2]}")
         elif func3 == '0b110':
             # Computes OR between two registers converts the output to hex and pads it
-            self.myRF.wrtieRF(rd_hex_int, self.padHexVal(hex(int(self.myRF.readRF(rs1_hex_int), 16)|int(self.myRF.readRF(rs2_hex_int), 16))))
-            print("Writing OR to register: {r_instruction_list[2]}")
+            self.myRF.writeRF(rd_int, self.padHexVal(hex(int(self.myRF.readRF(rs1_int), 16)|int(self.myRF.readRF(rs2_int), 16))))
+            print(f"Writing OR to register: {r_instruction_list[2]}")
         else:
             print('This R type instruction is not able to be executed with this RISC-V core.')
         return
         
     def executeIInstr(self, i_instruction_list):
         func3 = i_instruction_list[0]
-        rd_hex_int = int(hex(int(i_instruction_list[1], 2))[2:])
+        rd_int = int(i_instruction_list[1], 2)
         rs1_hex = hex(int(i_instruction_list[2], 2))
-        rs1_hex_int = int(hex(int(i_instruction_list[2], 2))[2:])
-        # print(f'rs1_hex_int is {rs1_hex_int}')
+        rs1_int = int(i_instruction_list[2], 2)
+        # print(f'rs1_int is {rs1_int}')
         immed_bin = i_instruction_list[3]
         immed_hex = hex(int(i_instruction_list[3], 2))
-        print(type(immed_bin), immed_bin)
+        # print(type(immed_bin), immed_bin)
         immed_hex_byte_addressed = hex(round(int(i_instruction_list[3], 2)/4))
         
         if func3 == '0b000':
             # AddI
-            sum_val = self.addSignedNums(self.formatMemVal(self.myRF.readRF(rs1_hex_int)),self.getSignExtVal(immed_hex))
-            self.myRF.writeRF(rd_hex_int, sum_val)
+            sum_val = self.addSignedNums(self.formatMemVal(self.myRF.readRF(rs1_int)),self.getSignExtVal(immed_hex))
+            self.myRF.writeRF(rd_int, sum_val)
             print(f'adding immediate value {immed_hex} to {rs1_hex} and writing to {i_instruction_list[1]}')
             print('\n')
         elif func3 == '0b010':
@@ -201,51 +211,69 @@ class Core(object):
             address_sum = self.addSignedNums(rs1_hex,self.getSignExtVal(immed_hex_byte_addressed))
             # converted_sum = int(address_sum[2:])
             data_mem = self.formatMemVal(self.ext_dmem.readDataMem(address_sum))
-            self.myRF.writeRF(rd_hex_int, data_mem)
-            print(f'Writing to address {'0x' + str(rd_hex_int)} with value at address {address_sum}')
+            self.myRF.writeRF(rd_int, data_mem)
+            print(f'Writing to address {'0x' + str(rd_int)} with value at address {address_sum}')
             print(f'Written data is: {data_mem}')
             print('')
         elif func3 == '0b100':
             # XORI
             print('XORI')
-            comparison = int(self.formatMemVal(self.myRF.readRF(rs1_hex_int)), 16)^int(self.formatMemVal(self.getSignExtVal(immed_hex)), 16)
-            self.myRF.writeRF(rd_hex_int, hex(comparison))
-            pass
+            val_1 = int(self.formatMemVal(self.myRF.readRF(rs1_int)), 16)
+            val_2 = int(self.formatMemVal(self.getSignExtVal(immed_hex)), 16)
+            comparison = val_1^val_2
+            comparison_hex = hex(comparison)
+            self.myRF.writeRF(rd_int, comparison_hex)
         elif func3 == '0b110':
             # ORI
             print('ORI')
-            comparison = int(self.formatMemVal(self.myRF.readRF(rs1_hex_int)), 16)|int(self.formatMemVal(self.getSignExtVal(immed_hex)), 16)
-            self.myRF.writeRF(rd_hex_int, hex(comparison))
-            pass
+            comparison = int(self.formatMemVal(self.myRF.readRF(rs1_int)), 16)|int(self.formatMemVal(self.getSignExtVal(immed_hex)), 16)
+            self.myRF.writeRF(rd_int, hex(comparison))
         elif func3 == '0b111':
             # ANDI
             print('ANDI')
-            comparison = int(self.formatMemVal(self.myRF.readRF(rs1_hex_int)), 16)&int(self.formatMemVal(self.getSignExtVal(immed_hex)), 16)
-            self.myRF.writeRF(rd_hex_int, hex(comparison))
-            pass
-        
+            comparison = int(self.formatMemVal(self.myRF.readRF(rs1_int)), 16)&int(self.formatMemVal(self.getSignExtVal(immed_hex)), 16)
+            self.myRF.writeRF(rd_int, hex(comparison))
         return
         
     #FIXME: Need to complete this method
     # - Need to properly construct sign extended immediate value to be saved
     def executeSInstr(self, s_instruction_list):
-        # [func3, rs2, rs1, immed_2, immed_1]
-        # func3 = s_instruction_list[0]
         rs2_hex = hex(int(s_instruction_list[1], 2))
-        rs1_hex_int = int(hex(int(s_instruction_list[2], 2))[2:])
-        immed_2 = s_instruction_list[3]
-        immed_1 = s_instruction_list[4]
-        immed_comb_bin = immed_2+immed_1[2:]
-        immed_comb_hex_byte_addressed = hex(int(immed_comb_bin, 2)/4) 
+        rs1_int = int(s_instruction_list[2], 2)
+        # immed_2 = s_instruction_list[3]
+        # immed_1 = s_instruction_list[4]
+        # immed_comb_bin = immed_2+immed_1[2:]
+        immed_comb_hex_byte_addressed = hex(round(int(s_instruction_list[3]+s_instruction_list[4][2:], 2)/4)) 
         
-        reg_mem = self.myRF.readRF(self.addSignedNums(rs2_hex, immed_comb_hex_byte_addressed))
-        self.ext_dmem.writeDataMem(rs1_hex_int, reg_mem)
+        reg_mem = self.myRF.readRF(int(self.addSignedNums(rs2_hex, immed_comb_hex_byte_addressed)[2:]))
+        self.ext_dmem.writeDataMem(rs1_int, reg_mem)
         return
     
     def executeJInstr(self, j_instruction_list):
+        
         pass
     
     def executeBInstr(self, b_instruction_list):
+        func3 = b_instruction_list[0]
+        rs2_hex = hex(int(b_instruction_list[1], 2))
+        rs1_hex = hex(int(b_instruction_list[2], 2))[2:]
+        immed_2 = b_instruction_list[3]
+        immed_1 = b_instruction_list[4]
+        immed_comb_bin = immed_2+immed_1[2:]
+        immed_comb_hex_byte_addressed = hex(round(int(immed_comb_bin, 2)/4)) 
+        
+        if func3 == '0b000':
+            # BEQ
+            if(rs1_hex == rs2_hex):
+                # PC = PC + sign_ext(imm) 
+                self.nextState["PC"] = self.addSignedNums(hex(self.nextState["PC"]), immed_comb_hex_byte_addressed) 
+                print("Branching to instruction: ")
+        elif func3 == '0b001':
+            # BNE
+            if(rs1_hex != rs2_hex):
+                # PC = PC + sign_ext(imm) 
+                self.nextState["PC"] = self.addSignedNums(hex(self.nextState["PC"]), immed_comb_hex_byte_addressed) 
+                print("Branching to instruction: ")
         pass
     
     def getTwosComplement(self, value_hex):
@@ -320,42 +348,47 @@ class SingleStageCore(Core):
     def step(self):
         reg_address = hex(self.state.IF["PC"]*8)
         instruction_hex_unpadded = imem.readInstr(reg_address)
-        instruction_hex = self.padHexVal(instruction_hex_unpadded) #hex
-        instruction_bin = self.padBinVal(bin(int(instruction_hex, base=16)))
+        
         self.state.IF["PC"] += 4
         self.nextState.IF["PC"] += 4
-   
-        opcode = imem.getOpCode(instruction_bin)
-        print(f'Padded cycle {self.cycle} in binary is {instruction_bin} with length of {len(instruction_bin)}')
-        # print(f'The opcode of instruction {i} is {opcode}')
-        instr_type = self.getInstrType(opcode)
-        print(f'Register on cycle{self.cycle} is: \n{self.myRF.Registers}')
-        # print(f'Type of item in register on cycle {self.cycle} is {type(self.myRF.Registers[0])}')
-        match instr_type:
-            case 'R':
-                print('R instruction')
-                r_instruction_list =  imem.separateRInstr(instruction_bin)
-                self.executeRInstr(r_instruction_list)
-            case 'I':
-                print('I instruction')
-                i_instruction_list = imem.separateIInstr(instruction_bin)
-                self.executeIInstr(i_instruction_list)
-            case 'J':
-                print('J instruction')
-                print(f'RF values: {self.myRF.Registers}')
-                [rd, immed] = imem.separateJInstr(instruction_bin)
-            case 'B':
-                print('B instruction')
-                [func3, rs2, rs1, immed_2, immed_1] = imem.separateSBInstr(instruction_bin)
-            case 'S':
-                print('S instruction')
-                [func3, rs2, rs1, immed_2, immed_1] = imem.separateSBInstr(instruction_bin)
-                s_instruction_list = imem.separateSBInstr(instruction_bin)
-                # self.executeSInstr(s_instruction_list)
-            case _:
-                print('Halt instruction')
-                self.halted = True
-            
+        
+        if(instruction_hex_unpadded != ''):
+            instruction_hex = self.padHexVal(instruction_hex_unpadded) #hex
+            instruction_bin = self.padBinVal(bin(int(imem.readInstr(reg_address), base=16)))
+            opcode = imem.getOpCode(instruction_bin)
+            print(f'Padded cycle {self.cycle} in binary is {instruction_bin} with length of {len(instruction_bin)}')
+            # print(f'The opcode of instruction {i} is {opcode}')
+            instr_type = self.getInstrType(opcode)
+            print(f'Register on cycle{self.cycle} is: \n{self.myRF.Registers}')
+            # print(f'Type of item in register on cycle {self.cycle} is {type(self.myRF.Registers[0])}')
+            match instr_type:
+                case 'R':
+                    print('R instruction')
+                    r_instruction_list =  imem.separateRInstr(instruction_bin)
+                    self.executeRInstr(r_instruction_list)
+                case 'I':
+                    print('I instruction')
+                    i_instruction_list = imem.separateIInstr(instruction_bin)
+                    self.executeIInstr(i_instruction_list)
+                case 'J':
+                    print('J instruction')
+                    # print(f'RF values: {self.myRF.Registers}')
+                    [rd, immed] = imem.separateJInstr(instruction_bin)
+                case 'B':
+                    print('B instruction')
+                    # [func3, rs2, rs1, immed_2, immed_1] = imem.separateSBInstr(instruction_bin)
+                    b_instruction_list = imem.separateSBInstr(instruction_bin)
+                    self.executeBInstr(b_instruction_list)
+                case 'S':
+                    print('S instruction')
+                    # [func3, rs2, rs1, immed_2, immed_1] = imem.separateSBInstr(instruction_bin)
+                    s_instruction_list = imem.separateSBInstr(instruction_bin)
+                    self.executeSInstr(s_instruction_list)
+                case _:
+                    print('Halt instruction')
+                    self.halted = True
+        else:
+            self.halted = True
         print('')
         # self.halted = True
         if self.state.IF["nop"]:
