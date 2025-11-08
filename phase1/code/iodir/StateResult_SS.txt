@@ -82,3 +82,1395 @@ IF.nop: False
 State after executing cycle: 20
 IF.PC: 164
 IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 1
+IF.PC: 4
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 3
+IF.PC: 8
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 5
+IF.PC: 12
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 7
+IF.PC: 16
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 9
+IF.PC: 20
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 11
+IF.PC: 24
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 13
+IF.PC: 28
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 15
+IF.PC: 32
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 17
+IF.PC: 36
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 19
+IF.PC: 40
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 21
+IF.PC: 44
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 23
+IF.PC: 48
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 25
+IF.PC: 52
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 27
+IF.PC: 56
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 29
+IF.PC: 60
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 31
+IF.PC: 64
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 33
+IF.PC: 68
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 35
+IF.PC: 72
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 37
+IF.PC: 76
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 39
+IF.PC: 80
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 41
+IF.PC: 84
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 43
+IF.PC: 88
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 45
+IF.PC: 92
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 47
+IF.PC: 96
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 49
+IF.PC: 100
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 51
+IF.PC: 104
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 53
+IF.PC: 108
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 55
+IF.PC: 112
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 57
+IF.PC: 116
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 59
+IF.PC: 120
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 61
+IF.PC: 124
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 63
+IF.PC: 128
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 65
+IF.PC: 132
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 67
+IF.PC: 136
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 69
+IF.PC: 140
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 71
+IF.PC: 144
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 73
+IF.PC: 148
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 75
+IF.PC: 152
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 77
+IF.PC: 156
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 1
+IF.PC: 4
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 3
+IF.PC: 8
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 5
+IF.PC: 12
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 7
+IF.PC: 16
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 9
+IF.PC: 20
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 11
+IF.PC: 24
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 13
+IF.PC: 28
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 15
+IF.PC: 32
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 17
+IF.PC: 36
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 19
+IF.PC: 40
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 21
+IF.PC: 44
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 23
+IF.PC: 48
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 25
+IF.PC: 52
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 27
+IF.PC: 56
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 29
+IF.PC: 60
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 31
+IF.PC: 64
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 33
+IF.PC: 68
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 35
+IF.PC: 72
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 37
+IF.PC: 76
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 39
+IF.PC: 80
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 41
+IF.PC: 84
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 43
+IF.PC: 88
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 45
+IF.PC: 92
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 47
+IF.PC: 96
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 49
+IF.PC: 100
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 51
+IF.PC: 104
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 53
+IF.PC: 108
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 55
+IF.PC: 112
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 57
+IF.PC: 116
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 59
+IF.PC: 120
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 61
+IF.PC: 124
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 63
+IF.PC: 128
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 65
+IF.PC: 132
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 67
+IF.PC: 136
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 69
+IF.PC: 140
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 71
+IF.PC: 144
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 73
+IF.PC: 148
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 75
+IF.PC: 152
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 77
+IF.PC: 156
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 1
+IF.PC: 4
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 3
+IF.PC: 8
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 5
+IF.PC: 12
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 7
+IF.PC: 16
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 9
+IF.PC: 20
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 11
+IF.PC: 24
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 13
+IF.PC: 28
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 15
+IF.PC: 32
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 17
+IF.PC: 36
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 19
+IF.PC: 40
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 21
+IF.PC: 44
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 23
+IF.PC: 48
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 25
+IF.PC: 52
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 27
+IF.PC: 56
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 29
+IF.PC: 60
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 31
+IF.PC: 64
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 33
+IF.PC: 68
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 35
+IF.PC: 72
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 37
+IF.PC: 76
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 39
+IF.PC: 80
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 41
+IF.PC: 84
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 43
+IF.PC: 88
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 45
+IF.PC: 92
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 47
+IF.PC: 96
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 49
+IF.PC: 100
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 51
+IF.PC: 104
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 53
+IF.PC: 108
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 55
+IF.PC: 112
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 57
+IF.PC: 116
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 59
+IF.PC: 120
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 61
+IF.PC: 124
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 63
+IF.PC: 128
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 65
+IF.PC: 132
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 67
+IF.PC: 136
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 69
+IF.PC: 140
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 71
+IF.PC: 144
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 73
+IF.PC: 148
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 75
+IF.PC: 152
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 77
+IF.PC: 156
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 1
+IF.PC: 4
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 3
+IF.PC: 8
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 5
+IF.PC: 12
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 7
+IF.PC: 16
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 9
+IF.PC: 20
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 11
+IF.PC: 24
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 13
+IF.PC: 28
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 15
+IF.PC: 32
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 17
+IF.PC: 36
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 19
+IF.PC: 40
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 21
+IF.PC: 44
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 23
+IF.PC: 48
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 25
+IF.PC: 52
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 27
+IF.PC: 56
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 29
+IF.PC: 60
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 31
+IF.PC: 64
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 33
+IF.PC: 68
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 35
+IF.PC: 72
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 37
+IF.PC: 76
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 39
+IF.PC: 80
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 41
+IF.PC: 84
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 43
+IF.PC: 88
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 45
+IF.PC: 92
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 47
+IF.PC: 96
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 49
+IF.PC: 100
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 51
+IF.PC: 104
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 53
+IF.PC: 108
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 55
+IF.PC: 112
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 57
+IF.PC: 116
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 59
+IF.PC: 120
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 61
+IF.PC: 124
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 63
+IF.PC: 128
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 65
+IF.PC: 132
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 67
+IF.PC: 136
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 69
+IF.PC: 140
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 71
+IF.PC: 144
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 73
+IF.PC: 148
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 75
+IF.PC: 152
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 77
+IF.PC: 156
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 1
+IF.PC: 4
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 3
+IF.PC: 8
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 5
+IF.PC: 12
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 7
+IF.PC: 16
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 9
+IF.PC: 20
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 11
+IF.PC: 24
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 13
+IF.PC: 28
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 15
+IF.PC: 32
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 17
+IF.PC: 36
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 19
+IF.PC: 40
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 21
+IF.PC: 44
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 23
+IF.PC: 48
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 25
+IF.PC: 52
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 27
+IF.PC: 56
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 29
+IF.PC: 60
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 31
+IF.PC: 64
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 33
+IF.PC: 68
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 35
+IF.PC: 72
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 37
+IF.PC: 76
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 39
+IF.PC: 80
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 41
+IF.PC: 84
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 43
+IF.PC: 88
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 45
+IF.PC: 92
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 47
+IF.PC: 96
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 49
+IF.PC: 100
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 51
+IF.PC: 104
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 53
+IF.PC: 108
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 55
+IF.PC: 112
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 57
+IF.PC: 116
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 59
+IF.PC: 120
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 61
+IF.PC: 124
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 63
+IF.PC: 128
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 65
+IF.PC: 132
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 67
+IF.PC: 136
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 69
+IF.PC: 140
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 71
+IF.PC: 144
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 73
+IF.PC: 148
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 75
+IF.PC: 152
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 1
+IF.PC: 4
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 3
+IF.PC: 8
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 5
+IF.PC: 12
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 7
+IF.PC: 16
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 9
+IF.PC: 20
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 11
+IF.PC: 24
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 13
+IF.PC: 28
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 15
+IF.PC: 32
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 17
+IF.PC: 36
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 19
+IF.PC: 40
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 21
+IF.PC: 44
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 23
+IF.PC: 48
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 25
+IF.PC: 52
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 27
+IF.PC: 56
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 29
+IF.PC: 60
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 31
+IF.PC: 64
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 33
+IF.PC: 68
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 35
+IF.PC: 72
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 37
+IF.PC: 76
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 39
+IF.PC: 80
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 41
+IF.PC: 84
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 43
+IF.PC: 88
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 45
+IF.PC: 92
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 47
+IF.PC: 96
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 49
+IF.PC: 100
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 51
+IF.PC: 104
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 53
+IF.PC: 108
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 55
+IF.PC: 112
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 57
+IF.PC: 116
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 59
+IF.PC: 120
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 61
+IF.PC: 124
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 63
+IF.PC: 128
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 65
+IF.PC: 132
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 67
+IF.PC: 136
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 69
+IF.PC: 140
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 71
+IF.PC: 144
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 73
+IF.PC: 148
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 75
+IF.PC: 152
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 1
+IF.PC: 4
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 3
+IF.PC: 8
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 5
+IF.PC: 12
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 7
+IF.PC: 16
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 9
+IF.PC: 20
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 11
+IF.PC: 24
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 13
+IF.PC: 28
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 15
+IF.PC: 32
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 17
+IF.PC: 36
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 19
+IF.PC: 40
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 21
+IF.PC: 44
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 23
+IF.PC: 48
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 25
+IF.PC: 52
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 27
+IF.PC: 56
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 29
+IF.PC: 60
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 31
+IF.PC: 64
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 33
+IF.PC: 68
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 35
+IF.PC: 72
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 37
+IF.PC: 76
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 39
+IF.PC: 80
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 41
+IF.PC: 84
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 43
+IF.PC: 88
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 45
+IF.PC: 92
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 47
+IF.PC: 96
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 49
+IF.PC: 100
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 51
+IF.PC: 104
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 53
+IF.PC: 108
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 55
+IF.PC: 112
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 57
+IF.PC: 116
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 59
+IF.PC: 120
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 61
+IF.PC: 124
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 63
+IF.PC: 128
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 65
+IF.PC: 132
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 67
+IF.PC: 136
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 69
+IF.PC: 140
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 71
+IF.PC: 144
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 73
+IF.PC: 148
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 75
+IF.PC: 152
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 1
+IF.PC: 4
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 3
+IF.PC: 8
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 5
+IF.PC: 12
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 7
+IF.PC: 16
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 9
+IF.PC: 20
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 11
+IF.PC: 24
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 13
+IF.PC: 28
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 15
+IF.PC: 32
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 17
+IF.PC: 36
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 19
+IF.PC: 40
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 21
+IF.PC: 44
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 23
+IF.PC: 48
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 25
+IF.PC: 52
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 27
+IF.PC: 56
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 29
+IF.PC: 60
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 31
+IF.PC: 64
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 33
+IF.PC: 68
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 35
+IF.PC: 72
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 37
+IF.PC: 76
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 39
+IF.PC: 80
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 41
+IF.PC: 84
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 43
+IF.PC: 88
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 45
+IF.PC: 92
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 47
+IF.PC: 96
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 49
+IF.PC: 100
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 51
+IF.PC: 104
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 53
+IF.PC: 108
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 55
+IF.PC: 112
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 57
+IF.PC: 116
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 59
+IF.PC: 120
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 61
+IF.PC: 124
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 63
+IF.PC: 128
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 65
+IF.PC: 132
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 67
+IF.PC: 136
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 69
+IF.PC: 140
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 71
+IF.PC: 144
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 73
+IF.PC: 148
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 75
+IF.PC: 152
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 77
+IF.PC: 156
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 1
+IF.PC: 4
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 3
+IF.PC: 8
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 5
+IF.PC: 12
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 7
+IF.PC: 16
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 9
+IF.PC: 20
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 11
+IF.PC: 24
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 13
+IF.PC: 28
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 15
+IF.PC: 32
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 17
+IF.PC: 36
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 19
+IF.PC: 40
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 21
+IF.PC: 44
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 23
+IF.PC: 48
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 25
+IF.PC: 52
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 27
+IF.PC: 56
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 29
+IF.PC: 60
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 31
+IF.PC: 64
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 33
+IF.PC: 68
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 35
+IF.PC: 72
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 37
+IF.PC: 76
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 39
+IF.PC: 80
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 41
+IF.PC: 84
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 43
+IF.PC: 88
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 45
+IF.PC: 92
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 47
+IF.PC: 96
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 49
+IF.PC: 100
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 51
+IF.PC: 104
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 53
+IF.PC: 108
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 55
+IF.PC: 112
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 57
+IF.PC: 116
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 59
+IF.PC: 120
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 61
+IF.PC: 124
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 63
+IF.PC: 128
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 65
+IF.PC: 132
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 67
+IF.PC: 136
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 69
+IF.PC: 140
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 71
+IF.PC: 144
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 73
+IF.PC: 148
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 75
+IF.PC: 152
+IF.nop: False
+----------------------------------------------------------------------
+State after executing cycle: 77
+IF.PC: 156
+IF.nop: False
